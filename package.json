@@ -1,0 +1,38 @@
+{
+  "name": "work_menagement_web",
+  "version": "1.0.0",
+  "description": "new exchange web frontend using NUXT 3 Nuxt 3 Minimal Starter",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nymaa999/work_menagement_web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nymaa999/work_menagement_web/issues"
+  },
+  "homepage": "https://github.com/nymaa999/work_menagement_web#readme",
+  "dependencies": {
+    "nuxt": "^3.10.1",
+    "@nuxtjs/tailwindcss": "^6.11.3",
+    "@pinia/nuxt": "^0.5.1",
+    "pinia": "^2.1.7"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config-typescript": "^12.1.0",
+    "@types/node": "^20.11.16",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  }
+}

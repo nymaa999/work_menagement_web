@@ -1,0 +1,1 @@
+export { default } from "file:///home/nymka/Desktop/projects/work_menagement_web/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"
