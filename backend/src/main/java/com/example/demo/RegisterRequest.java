@@ -1,15 +1,16 @@
 package com.example.demo;
 
+
 public class RegisterRequest {
-    private String name;
+    private String username;
     private String email;
     private String password;
 
     public String getName() {
-        return name;
+        return username;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String username) {
+        this.username = username;
     }
     public String getEmail() {
         return email;
