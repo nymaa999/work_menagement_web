@@ -24,9 +24,11 @@
   },
   "homepage": "https://github.com/nymaa999/work_menagement_web#readme",
   "dependencies": {
-    "nuxt": "^3.10.1",
     "@nuxtjs/tailwindcss": "^6.11.3",
     "@pinia/nuxt": "^0.5.1",
+    "axios": "^1.8.4",
+    "cors": "^2.8.5",
+    "nuxt": "^3.10.1",
     "pinia": "^2.1.7"
   },
   "devDependencies": {

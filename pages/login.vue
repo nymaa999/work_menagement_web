@@ -112,17 +112,19 @@ const form = ref({
   remember: false
 })
 
-const handleLogin = async () => {
+const handleLogin = async (): Promise<void> => {
   try {
     loading.value = true
     await userStore.login(form.value.email, form.value.password)
-    router.push('/')
+    await router.push('/profile')
   } catch (error) {
     console.error('Login failed:', error)
+    alert('Нэвтрэх үед алдаа гарлаа. Дахин оролдоно уу.')
   } finally {
     loading.value = false
   }
 }
+
 
 const handleGoogleLogin = async () => {
   try {

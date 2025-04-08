@@ -141,6 +141,10 @@
 </template>
 
 <script setup lang="ts">
+import {useUserStore} from '@/stores/user'
+import {ref} from 'vue'
+
+
 const userStore = useUserStore()
 const loading = ref(false)
 const form = ref({
@@ -159,7 +163,14 @@ const handleRegister = async () => {
 
   try {
     loading.value = true
-    await userStore.register(form.value)
+
+    // Back-end рүү зөвхөн шаардлагатай өгөгдлийг илгээх
+    await userStore.register({
+      name: form.value.name,
+      email: form.value.email,
+      password: form.value.password
+    })
+
     navigateTo('/login')
   } catch (error) {
     console.error('Registration error:', error)
@@ -168,7 +179,6 @@ const handleRegister = async () => {
     loading.value = false
   }
 }
-
 const handleGoogleRegister = async () => {
   try {
     loading.value = true

@@ -1,11 +1,20 @@
 package com.example.demo;
 
+import org.bson.types.ObjectId;
+
 
 public class UserResponse {
-    private int id;
+    private ObjectId id;
     private String name;
     private String email;
+    
+    public UserResponse() {
+    }
 
+    public UserResponse(String username, String email2) {
+        this.name = username;
+        this.email = email2;
+    }
     public String getName() {
         return name;
     }
@@ -18,10 +27,10 @@ public class UserResponse {
     public void setEmail(String email) {
         this.email = email;
     }
-    public int getId() {
+    public Object getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 }

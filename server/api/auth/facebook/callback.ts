@@ -29,6 +29,7 @@ export default defineEventHandler(async (event) => {
     })
 
     const tokenData = await tokenResponse.json()
+    console.log('Token data:', tokenData)
 
     if (!tokenData.access_token) {
       throw new Error('Failed to get access token')

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import axios from 'axios';
 
 interface User {
   id: string | number
@@ -11,8 +12,8 @@ interface RegisterForm {
   name: string
   email: string
   password: string
-  confirmPassword: string
-  acceptTerms: boolean
+  confirmPassword?: string
+  acceptTerms?: boolean
 }
 
 export const useUserStore = defineStore('user', {
@@ -38,32 +39,32 @@ export const useUserStore = defineStore('user', {
       try {
         this.loading = true
         this.error = null
-
-        // TODO: Replace with actual API call
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000))
-
-        // Create user object
-        const user: User = {
-          id: Date.now(), // Temporary ID
+    
+        console.log("it's working");
+        // Backend рүү API хүсэлт илгээх
+        const response = await axios.post('http://localhost:9911/api/auth/register', {
           name: form.name,
           email: form.email,
-          avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(form.name)}`
-        }
-
-        // Save to localStorage
+          password: form.password, // Backend-д илгээх шаардлагатай
+        })
+    
+        // Амжилттай бүртгэгдсэн хэрэглэгчийн мэдээлэл авах
+        const user = response.data
+    
+        // LocalStorage-д хадгалах
         localStorage.setItem('user', JSON.stringify(user))
-        
-        // Update state
+    
+        // State шинэчлэх
         this.currentUser = user
         this.isAuthenticated = true
-
+    
         // Бүртгэлийн дараа профайл хуудас руу шилжих
-        navigateTo('/profile')
-
+        // navigateTo('/profile')
+    
         return user
       } catch (error) {
-        this.error = 'Failed to register'
+        console.error('Registration failed:', error)
+        this.error = 'Бүртгэл амжилтгүй'
         throw error
       } finally {
         this.loading = false
@@ -123,29 +124,33 @@ export const useUserStore = defineStore('user', {
       try {
         this.loading = true
         this.error = null
-
-        // TODO: Replace with actual API call
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000))
-
-        // Get user from localStorage
-        const userStr = localStorage.getItem('user')
-        if (!userStr) {
-          throw new Error('User not found')
+    
+        // Spring Boot серверт нэвтрэх хүсэлт илгээх
+        const response = await axios.post('http://localhost:9911/api/auth/login', {
+          name: email, // API-тай нийцүүлэхийн тулд `username`
+          password: password
+        })
+    
+        const { user, token } = response.data
+    
+        if (!user || !token) {
+          throw new Error('Нэвтрэхэд алдаа гарлаа!')
         }
-
-        const user = JSON.parse(userStr)
-        if (user.email !== email) {
-          throw new Error('Invalid credentials')
-        }
-
-        // Update state
+    
+        // JWT Token-ийг хадгалах
+        localStorage.setItem('token', token)
+        localStorage.setItem('user', JSON.stringify(user))
+    
+        // Төлвийг шинэчлэх
         this.currentUser = user
         this.isAuthenticated = true
-
+    
+        // Профайл хуудас руу шилжих
+        navigateTo('/profile')
+    
         return user
       } catch (error) {
-        this.error = 'Failed to login'
+        this.error = 'Нэвтрэхэд алдаа гарлаа. Нууц үгээ шалгана уу!'
         throw error
       } finally {
         this.loading = false
@@ -155,21 +160,37 @@ export const useUserStore = defineStore('user', {
     logout() {
       // Clear localStorage
       localStorage.removeItem('user')
+      localStorage.removeItem('currentUser')
       
       // Reset state
       this.currentUser = null
       this.isAuthenticated = false
       this.error = null
+
+      // Нэвтрэх хуудас руу шилжих
+      navigateTo('/login')
     },
 
-    // Initialize user from localStorage on app start
     initializeUser() {
+      this.currentUser = null
+      this.isAuthenticated = false
+      this.error = null
+    
+      // Token байгаа эсэхийг шалгах
+      const token = localStorage.getItem('token')
       const userStr = localStorage.getItem('user')
-      if (userStr) {
-        const user = JSON.parse(userStr)
-        this.currentUser = user
-        this.isAuthenticated = true
+    
+      if (token && userStr) {
+        try {
+          const user = JSON.parse(userStr)
+          this.currentUser = user
+          this.isAuthenticated = true
+        } catch (error) {
+          console.error('Failed to parse user data:', error)
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+        }
       }
-    }
+    }    
   }
 }) 

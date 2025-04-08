@@ -2,8 +2,9 @@ com/example/demo/UserRepository.class
 com/example/demo/AuthService.class
 com/example/demo/UserResponse.class
 com/example/demo/AuthController.class
-com/example/demo/SecurityConfig.class
+com/example/Project.class
 com/example/demo/Main.class
+com/example/demo/WebConfig.class
 com/example/demo/LoginRequest.class
 com/example/demo/RegisterRequest.class
 com/example/demo/Users.class

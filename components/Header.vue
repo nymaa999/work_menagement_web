@@ -38,7 +38,7 @@
         <!-- User Menu -->
         <div class="flex items-center">
           <button 
-            v-if="!isLoggedIn"
+            v-if="!userStore.isLoggedIn"
             @click="navigateTo('/login')"
             class="btn bg-blue-600 text-white hover:bg-blue-700"
           >
@@ -50,11 +50,11 @@
               class="flex items-center space-x-2 text-gray-700 hover:text-gray-900"
             >
               <img 
-                :src="userAvatar" 
-                :alt="userName"
+                :src="userStore.getUserAvatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(userStore.getUser?.name || '')" 
+                :alt="userStore.getUser?.name"
                 class="h-8 w-8 rounded-full"
               >
-              <span class="text-sm font-medium">{{ userName }}</span>
+              <span class="text-sm font-medium">{{ userStore.getUser?.name }}</span>
               <svg 
                 class="h-4 w-4" 
                 :class="{ 'transform rotate-180': isMenuOpen }"
@@ -102,13 +102,14 @@
 </template>
 
 <script setup lang="ts">
-const isMenuOpen = ref(false)
-const isLoggedIn = ref(false)
-const userName = ref('John Doe')
-const userAvatar = ref('https://ui-avatars.com/api/?name=John+Doe')
+import { ref } from 'vue'
+import { useUserStore } from '../stores/user'
 
-const handleLogout = () => {
-  // TODO: Implement logout logic
-  isLoggedIn.value = false
+const userStore = useUserStore()
+const isMenuOpen = ref(false)
+
+const handleLogout = async () => {
+  isMenuOpen.value = false
+  await userStore.logout()
 }
 </script> 

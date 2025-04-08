@@ -2,9 +2,9 @@ package com.example.demo;
 
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepository extends JpaRepository<Users, Integer> {
+public interface UserRepository extends MongoRepository<Users, ObjectId> {
     Optional<Users> findByEmail(String email);
-    Optional<Users> findUserByUsername(String username);
 }

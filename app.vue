@@ -5,5 +5,13 @@
 </template>
 
 <script setup lang="ts">
-// App level setup
+import { useUserStore } from './stores/user'
+
+const userStore = useUserStore()
+
+// App эхлэх үед хэрэглэгчийн төлөвийг эхлүүлэх
+onMounted(() => {
+  // Хэрэглэгчийн төлөвийг эхлүүлэх
+  userStore.initializeUser()
+})
 </script> 

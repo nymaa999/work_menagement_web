@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-7xl mx-auto">
-    <div class="flex justify-between items-center my-10">
-      <h1 class="text-3xl font-bold text-gray-900">Work Management</h1>
+    <div class="flex flex-col items-center my-10">
+      <h1 class="text-3xl font-bold text-gray-900 mb-6">Work Management</h1>
       <button @click="showCreateTaskModal = true" class="btn btn-primary">
         Create New Task
       </button>
