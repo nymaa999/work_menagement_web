@@ -11,7 +11,7 @@
           >
           <div>
             <h1 class="text-2xl font-bold text-gray-900">{{ userStore.getUser?.name }}</h1>
-            <p class="text-gray-500">{{ userStore.getUserEmail }}</p>
+            <!-- <p class="text-gray-500">{{ userStore.getUserEmail }}</p> -->
           </div>
         </div>
 

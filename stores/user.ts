@@ -127,26 +127,26 @@ export const useUserStore = defineStore('user', {
     
         // Spring Boot серверт нэвтрэх хүсэлт илгээх
         const response = await axios.post('http://localhost:9911/api/auth/login', {
-          name: email, // API-тай нийцүүлэхийн тулд `username`
+          email: email,
           password: password
         })
     
-        const { user, token } = response.data
+        const user = response.data
+        // console.log('User:', user.name, user.email)
     
-        if (!user || !token) {
+        if (!user.name || !user.email) {
           throw new Error('Нэвтрэхэд алдаа гарлаа!')
         }
     
-        // JWT Token-ийг хадгалах
-        localStorage.setItem('token', token)
+        // Хэрэглэгчийн мэдээллийг хадгалах (локал эсвэл санах ойд)
         localStorage.setItem('user', JSON.stringify(user))
     
         // Төлвийг шинэчлэх
         this.currentUser = user
         this.isAuthenticated = true
     
-        // Профайл хуудас руу шилжих
-        navigateTo('/profile')
+        // Хуудас руу шилжих
+        navigateTo('/dashboard')
     
         return user
       } catch (error) {
