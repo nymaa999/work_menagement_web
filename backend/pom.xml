@@ -44,6 +44,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- lambok  -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
         <!-- JUnit 5 dependencies for testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

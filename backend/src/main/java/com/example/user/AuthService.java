@@ -1,4 +1,4 @@
-package com.example.demo;   
+package com.example.user;   
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +19,6 @@ public class AuthService {
         if (existing.isPresent()) {
             throw new RuntimeException("Email already in use!");
         }
-
 
         // Create user
         Users newUser = new Users(request.getName(), request.getEmail(), request.getPassword());

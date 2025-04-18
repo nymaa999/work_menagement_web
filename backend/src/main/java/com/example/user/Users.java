@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.user;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;

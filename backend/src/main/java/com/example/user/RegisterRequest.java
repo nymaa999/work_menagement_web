@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.user;
 
 public class RegisterRequest {
     private String name;
