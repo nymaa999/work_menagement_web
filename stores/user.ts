@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 import axios from 'axios';
 
-interface User {
+export interface User {
   id: string | number
-  name: string
+  username: string
   email: string
   avatar?: string
 }
@@ -18,6 +18,7 @@ interface RegisterForm {
 
 export const useUserStore = defineStore('user', {
   state: () => ({
+    users: [] as User[],
     currentUser: null as User | null,
     loading: false,
     error: null as string | null,
@@ -39,16 +40,11 @@ export const useUserStore = defineStore('user', {
       try {
         this.loading = true
         this.error = null
-    
-        console.log("it's working");
-        // Backend рүү API хүсэлт илгээх
         const response = await axios.post('http://localhost:9911/api/auth/register', {
           name: form.name,
           email: form.email,
-          password: form.password, // Backend-д илгээх шаардлагатай
+          password: form.password, 
         })
-    
-        // Амжилттай бүртгэгдсэн хэрэглэгчийн мэдээлэл авах
         const user = response.data
     
         // LocalStorage-д хадгалах
@@ -171,26 +167,45 @@ export const useUserStore = defineStore('user', {
       navigateTo('/login')
     },
 
-    initializeUser() {
-      this.currentUser = null
-      this.isAuthenticated = false
-      this.error = null
+    // initializeUser() {
+    //   const userStr = localStorage.getItem('user')
     
-      // Token байгаа эсэхийг шалгах
-      const token = localStorage.getItem('token')
-      const userStr = localStorage.getItem('user')
+    //   if (userStr) {
+    //     try {
+    //       const user = JSON.parse(userStr)
+    //       this.currentUser = user
+    //       this.isAuthenticated = true
+    //     } catch (error) {
+    //       console.error('Failed to parse user data:', error)
+    //       localStorage.removeItem('user')
+    //       this.currentUser = null
+    //       this.isAuthenticated = false
+    //     }
+    //   } else {
+    //     this.currentUser = null
+    //     this.isAuthenticated = false
+    //   }
     
-      if (token && userStr) {
-        try {
-          const user = JSON.parse(userStr)
-          this.currentUser = user
-          this.isAuthenticated = true
-        } catch (error) {
-          console.error('Failed to parse user data:', error)
-          localStorage.removeItem('token')
-          localStorage.removeItem('user')
-        }
+    //   this.error = null
+    // }
+    async getUsers(){
+      try {
+        this.loading = true
+        this.error = null
+
+        const response = await axios.get('http://localhost:9911/api/auth/all-users')
+        // console.log("this is res:",response.data);
+
+        this.users = response.data 
+        console.log("this is users:",this.users);
+
       }
-    }    
+      catch (error) {
+        this.error = 'Failed to fetch users'
+      }
+      finally {
+        this.loading = false
+      }
+    }
   }
 }) 

@@ -5,6 +5,12 @@
 /home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/project/ProjectRepository.java
 /home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/project/ProjectResponse.java
 /home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/project/ProjectService.java
+/home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/task/Task.java
+/home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/task/TaskController.java
+/home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/task/TaskRepository.java
+/home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/task/TaskRequest.java
+/home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/task/TaskResponse.java
+/home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/task/TaskService.java
 /home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/user/AuthController.java
 /home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/user/AuthService.java
 /home/nymka/Desktop/projects/work_management_web/backend/src/main/java/com/example/user/LoginRequest.java

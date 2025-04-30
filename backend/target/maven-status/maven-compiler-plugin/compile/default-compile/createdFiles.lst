@@ -2,10 +2,15 @@ com/example/project/ProjectResponse.class
 com/example/user/WebConfig.class
 com/example/user/UserResponse.class
 com/example/user/RegisterRequest.class
+com/example/task/Task.class
 com/example/user/LoginRequest.class
 com/example/user/Users.class
 com/example/user/AuthController.class
 com/example/project/Project.class
+com/example/task/TaskController.class
+com/example/task/TaskRepository.class
+com/example/task/TaskRequest.class
+com/example/task/TaskResponse.class
 com/example/project/ProjectService.class
 com/example/user/UserRepository.class
 com/example/project/ProRegRequest.class
@@ -13,3 +18,4 @@ com/example/user/AuthService.class
 com/example/project/ProjectRepository.class
 com/example/project/ProjectController.class
 com/example/Main.class
+com/example/task/TaskService.class

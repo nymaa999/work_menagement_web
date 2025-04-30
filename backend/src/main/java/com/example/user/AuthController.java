@@ -43,7 +43,7 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/users")
+    @GetMapping("/all-users")
     public ResponseEntity<List<Users>> getAllUsers() {
         List<Users> users = authService.getAllUsers();
         return ResponseEntity.ok(users); // 200 OK

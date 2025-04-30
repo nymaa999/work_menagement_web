@@ -1,16 +1,26 @@
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
-interface Task {
+
+interface Task{
   id: string
   title: string
   description: string
   dueDate: string
   status: 'todo' | 'in-progress' | 'done'
   priority: 'low' | 'medium' | 'high'
-  assignedTo: string[]
-  createdBy: string
-  createdAt: string
-  updatedAt: string
+  taskMems: string[]
+  proId: string
+}
+
+export interface TaskForm{
+  title: string
+  description: string
+  dueDate: string
+  status: 'todo' | 'in-progress' | 'done'
+  priority: 'low' | 'medium' | 'high'
+  taskMems: string[]
+  proId: string
 }
 
 export const useTaskStore = defineStore('task', {
@@ -24,29 +34,26 @@ export const useTaskStore = defineStore('task', {
     getTasksByStatus: (state) => (status: Task['status']) => {
       return state.tasks.filter(task => task.status === status)
     },
-    getTasksByUser: (state) => (userId: string) => {
-      return state.tasks.filter(task => 
-        task.assignedTo.includes(userId) || task.createdBy === userId
-      )
-    }
+    // getTasksByUser: (state) => (userId: string) => {
+    //   return state.tasks.filter(task => 
+    //     task.taskMems.includes(userId) || task.createdBy === userId
+    //   )
+    // }
   },
 
   actions: {
-    async createTask(task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) {
+    async createTask(form: TaskForm) {
       try {
         this.loading = true
-        // TODO: API call to create task
-        const newTask: Task = {
-          ...task,
-          id: Date.now().toString(),
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        }
-        this.tasks.push(newTask)
-        return newTask
+        const response = await axios.post('http://localhost:9911/api/tasks/create', form)
+        const task = response.data
+        console.log("this is res:",task);
+
+        localStorage.setItem('task', JSON.stringify(task))
+        // this.currentTask = task
+
       } catch (error) {
-        this.error = 'Failed to create task'
-        throw error
+        this.error = 'Failed to create project'
       } finally {
         this.loading = false
       }
@@ -62,7 +69,6 @@ export const useTaskStore = defineStore('task', {
         this.tasks[taskIndex] = {
           ...this.tasks[taskIndex],
           ...updates,
-          updatedAt: new Date().toISOString()
         }
         return this.tasks[taskIndex]
       } catch (error) {
@@ -89,8 +95,10 @@ export const useTaskStore = defineStore('task', {
     async fetchTasks() {
       try {
         this.loading = true
-        // TODO: API call to fetch tasks
-        // this.tasks = await api.getTasks()
+        const response = await axios.get('http://localhost:9911/api/tasks/getAll')
+        this.tasks = response.data
+        
+        console.log(this.tasks);
       } catch (error) {
         this.error = 'Failed to fetch tasks'
         throw error

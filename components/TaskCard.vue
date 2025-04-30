@@ -25,7 +25,7 @@
       </div>
       
       <div class="flex items-center space-x-2">
-        <span v-for="userId in task.assignedTo" :key="userId" class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs">
+        <span v-for="userId in task.taskMems" :key="userId" class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs">
           {{ userId.charAt(0).toUpperCase() }}
         </span>
       </div>
@@ -41,7 +41,7 @@ interface Task {
   dueDate: string
   status: 'todo' | 'in-progress' | 'done'
   priority: 'low' | 'medium' | 'high'
-  assignedTo: string[]
+  taskMems: string[]
 }
 
 const props = defineProps<{

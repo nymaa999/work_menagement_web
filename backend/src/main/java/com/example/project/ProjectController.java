@@ -24,10 +24,13 @@ public class ProjectController {
     public List<Project> getAllProjects() {
         return projectService.getAllProjects();
     }
-   
+    
     @PostMapping("/create")
     public ResponseEntity<?> createProject(@RequestBody ProRegRequest request) {
         try {
+            
+            System.out.println("===== CREATE PROJECT METHOD CALLED =====");
+            System.out.println("Creating project: " + request.getProName() + ", " + request.getProDesc());  
             Project response = projectService.createProject(request);
             return ResponseEntity.ok(response); // 200 OK
         } catch (RuntimeException e) {

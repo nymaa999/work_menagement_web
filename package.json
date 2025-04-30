@@ -29,7 +29,8 @@
     "axios": "^1.8.4",
     "cors": "^2.8.5",
     "nuxt": "^3.10.1",
-    "pinia": "^2.1.7"
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^4.2.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.1.0",

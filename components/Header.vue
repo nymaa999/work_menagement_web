@@ -14,25 +14,40 @@
         <nav class="hidden md:flex space-x-8">
           <NuxtLink 
             :to="userStore.isLoggedIn ? '/dashboard' : '/'"
-            class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-            :class="{ 'text-blue-600': $route.path === '/' || $route.path === '/dashboard' }"
+            :class="[
+              'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+              ($route.path === '/' || $route.path === '/dashboard') 
+                ? 'text-blue-600 hover:text-blue-800' 
+                : 'text-gray-500 hover:text-gray-900'
+            ]"
           >
             {{ userStore.isLoggedIn ? 'Dashboard' : 'Home' }}
           </NuxtLink>
+
           <NuxtLink 
-            to="/tasks" 
-            class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-            :class="{ 'text-blue-600': $route.path === '/tasks' }"
+            :to="userStore.isLoggedIn ? '/' : '/tasks'" 
+            :class="[
+              'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+              ($route.path === '/tasks' )
+                ? 'text-blue-600 hover:text-blue-800'
+                : 'text-gray-500 hover:text-gray-900'
+            ]"
           >
-            Tasks
+            {{ userStore.isLoggedIn ? 'Chat' : 'Tasks' }}
           </NuxtLink>
+
           <NuxtLink 
-            to="/projects" 
-            class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-            :class="{ 'text-blue-600': $route.path === '/projects' }"
+            :to="userStore.isLoggedIn ? '/' : '/projects'" 
+            :class="[
+              'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+              ($route.path === '/projects')
+                ? 'text-blue-600 hover:text-blue-800'
+                : 'text-gray-500 hover:text-gray-900'
+            ]"
           >
-            Projects
+            {{ userStore.isLoggedIn ? 'Contact' : 'Projects' }}
           </NuxtLink>
+
         </nav>
 
         <!-- User Menu -->

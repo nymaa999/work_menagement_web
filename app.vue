@@ -5,13 +5,22 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from './stores/user'
+import { watch } from 'vue'
+import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
 
-// App эхлэх үед хэрэглэгчийн төлөвийг эхлүүлэх
-onMounted(() => {
-  // Хэрэглэгчийн төлөвийг эхлүүлэх
-  userStore.initializeUser()
-})
+// Watch currentUser -> хадгалах
+watch(
+  () => userStore.currentUser,
+  (newUser) => {
+    if (newUser) {
+      localStorage.setItem('user', JSON.stringify(newUser))
+    } else {
+      localStorage.removeItem('user')
+    }
+  },
+  { deep: true }
+)
+
 </script> 

@@ -56,16 +56,16 @@
         <div class="relative">
           <label class="block text-sm font-medium text-gray-700">Password</label>
           <input
-      v-model="form.password"
-      :type="showPassword ? 'text' : 'password'"
-      placeholder="Password"
-      class="input mt-1 w-full pr-10 py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
-    />
-    <button
-      type="button"
-      @click="showPassword = !showPassword"
-      class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-    >
+            v-model="form.password"
+            :type="showPassword ? 'text' : 'password'"
+            placeholder="Password"
+            class="input mt-1 pr-10 w-full"
+          />
+          <button
+            type="button"
+            class="absolute inset-y-0 right-3 flex items-center top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            @click="showPassword = !showPassword"
+          >
             <svg
               v-if="showPassword"
               xmlns="http://www.w3.org/2000/svg"
@@ -135,7 +135,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useUserStore } from '../stores/user'
+import { useUserStore } from '../../stores/user'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -154,7 +154,8 @@ const handleLogin = async (): Promise<void> => {
   try {
     loading.value = true
     await userStore.login(form.value.email, form.value.password)
-    await router.push('/profile')
+    await router.push('/dashboard')
+    alert('Нэвтрэлт амжилттай боллоо!')
   } catch (error) {
     console.error('Login failed:', error)
     alert('Нэвтрэх үед алдаа гарлаа. Дахин оролдоно уу.')

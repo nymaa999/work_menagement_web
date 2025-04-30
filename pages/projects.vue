@@ -6,12 +6,7 @@
         <h1 class="text-2xl font-bold text-gray-900">Projects</h1>
         <p class="text-gray-500 mt-1">Manage your work projects</p>
       </div>
-      <button 
-        @click="isCreateModalOpen = true"
-        class="btn bg-blue-600 text-white hover:bg-blue-700"
-      >
-        Create Project
-      </button>
+      
     </div>
 
     <!-- Filters -->
@@ -49,56 +44,54 @@
     </div>
 
     <!-- Projects Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div 
-        v-for="project in filteredProjects" 
-        :key="project.id"
-        class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
-      >
-        <div class="flex justify-between items-start mb-4">
-          <h3 class="text-lg font-semibold text-gray-900">{{ project.name }}</h3>
-          <span 
-            :class="{
-              'bg-green-100 text-green-800': project.status === 'active',
-              'bg-gray-100 text-gray-800': project.status === 'completed',
-              'bg-yellow-100 text-yellow-800': project.status === 'on-hold'
-            }"
-            class="px-2 py-1 text-xs font-medium rounded-full"
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-lg font-medium text-gray-900">Миний төслүүд</h2>
+          <button 
+            @click="isCreateModalOpen = true"
+            class="btn bg-blue-600 text-white hover:bg-blue-700"
           >
-            {{ project.status }}
-          </span>
+            New Project
+          </button>
         </div>
-        <p class="text-gray-600 text-sm mb-4">{{ project.description }}</p>
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <div class="flex -space-x-2">
-              <img 
-                v-for="member in project.members.slice(0, 3)" 
-                :key="member.id"
-                :src="member.avatar" 
-                :alt="member.name"
-                class="w-6 h-6 rounded-full border-2 border-white"
+
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div v-for="project in projects" :key="project.id" class="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-lg font-medium text-gray-900">{{ project.proName }}</h3>
+              <span 
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                :class="getStatusClass(project.proStatus)"
               >
-              <div 
-                v-if="project.members.length > 3"
-                class="w-6 h-6 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs text-gray-600"
-              >
-                +{{ project.members.length - 3 }}
+                {{ project.proStatus }}
+              </span>
+            </div>
+            <p class="text-gray-500 text-sm mb-4">{{ project.proDesc }}</p>
+            <div class="flex items-center justify-between">
+              <div class="flex -space-x-2">
+                <img 
+                  v-for="member in project.proMembers.slice(0, 3)" 
+                  :key="member"
+                  :src="`https://ui-avatars.com/api/?name=${member}&background=random`"
+                  :alt="member" 
+                  class="w-8 h-8 rounded-full border-2 border-white"
+                />
+                <div v-if="project.proMembers.length > 3" class="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs text-gray-500">
+                  +{{ project.proMembers.length - 3 }}
+                </div>
+              </div>
+              <div>
+                <NuxtLink 
+                  :to="{ name: 'tasks', query: { id: project.id, name: project.proName } }"
+                  class="text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  View Tasks
+                </NuxtLink>
               </div>
             </div>
           </div>
-          <div class="flex items-center space-x-4">
-            <span class="text-sm text-gray-500">{{ project.tasks }} tasks</span>
-            <button class="text-blue-600 hover:text-blue-700">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
-    </div>
-
     <!-- Create Project Modal -->
     <div 
       v-if="isCreateModalOpen"
@@ -116,130 +109,200 @@
             </svg>
           </button>
         </div>
-        <form @submit.prevent="handleCreateProject" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
-            <input 
-              v-model="newProject.name"
-              type="text"
-              required
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea 
-              v-model="newProject.description"
-              rows="3"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            ></textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-            <select 
-              v-model="newProject.status"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="active">Active</option>
-              <option value="completed">Completed</option>
-              <option value="on-hold">On Hold</option>
-            </select>
-          </div>
-          <div class="flex justify-end space-x-3 mt-6">
-            <button 
-              type="button"
-              @click="isCreateModalOpen = false"
-              class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
-            >
-              Cancel
-            </button>
-            <button 
-              type="submit"
-              class="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
-            >
-              Create Project
-            </button>
-          </div>
-        </form>
+          <form @submit.prevent="handleCreateProject" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
+              <input 
+                v-model="newProject.proName"
+                type="text"
+                required
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <textarea 
+                v-model="newProject.proDesc"
+                rows="3"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              ></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Project Type</label>
+              <select 
+                v-model="newProject.proType"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option disabled value="">Select Type</option>
+                <option value="internal">Internal</option>
+                <option value="external">External</option>
+                <option value="client">Client</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <select 
+                v-model="newProject.proStatus"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="active">Active</option>
+                <option value="completed">Completed</option>
+                <option value="on-hold">On Hold</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+              <input 
+                v-model="newProject.proStartDate"
+                type="date"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+              <input 
+                v-model="newProject.proEndDate"
+                type="date"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Team Members</label>
+              <select 
+                v-model="newProject.proMembers"
+                multiple
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option v-for="user in userStore.users" :value="user">
+                  {{ user.username }} 
+                </option>
+              </select>
+            </div>
+            <div class="flex justify-end space-x-3 mt-6">
+              <button 
+                type="button"
+                @click="isCreateModalOpen = false"
+                class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+              >
+                Cancel
+              </button>
+              <button 
+                type="submit"
+                class="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+              >
+                Create Project
+              </button>
+            </div>
+          </form>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const isCreateModalOpen = ref(false)
+import { useProjectStore } from '@/stores/project'
+import { useUserStore } from '@/stores/user'
+import { reactive, ref, computed, onMounted } from 'vue'
+import type { User } from '@/stores/user'
+
+// Store-ууд
+const proStore = useProjectStore()
+const userStore = useUserStore()
+
+// UI хувьсагчууд
 const searchQuery = ref('')
 const statusFilter = ref('')
 const priorityFilter = ref('')
+const isCreateModalOpen = ref(false)
 
-const newProject = ref({
-  name: '',
-  description: '',
-  status: 'active'
-})
+// const emit = defineEmits(['open-create-task'])
 
-// Mock data
-const projects = ref([
-  {
-    id: 1,
-    name: 'Website Redesign',
-    description: 'Redesign company website with modern UI/UX',
-    status: 'active',
-    tasks: 12,
-    members: [
-      { id: 1, name: 'John Doe', avatar: 'https://ui-avatars.com/api/?name=John+Doe' },
-      { id: 2, name: 'Jane Smith', avatar: 'https://ui-avatars.com/api/?name=Jane+Smith' },
-      { id: 3, name: 'Mike Johnson', avatar: 'https://ui-avatars.com/api/?name=Mike+Johnson' },
-      { id: 4, name: 'Sarah Wilson', avatar: 'https://ui-avatars.com/api/?name=Sarah+Wilson' }
-    ]
-  },
-  {
-    id: 2,
-    name: 'Mobile App Development',
-    description: 'Develop new mobile app for iOS and Android',
-    status: 'on-hold',
-    tasks: 8,
-    members: [
-      { id: 1, name: 'John Doe', avatar: 'https://ui-avatars.com/api/?name=John+Doe' },
-      { id: 2, name: 'Jane Smith', avatar: 'https://ui-avatars.com/api/?name=Jane+Smith' }
-    ]
-  },
-  {
-    id: 3,
-    name: 'Marketing Campaign',
-    description: 'Launch new marketing campaign for Q2',
-    status: 'completed',
-    tasks: 15,
-    members: [
-      { id: 1, name: 'John Doe', avatar: 'https://ui-avatars.com/api/?name=John+Doe' },
-      { id: 2, name: 'Jane Smith', avatar: 'https://ui-avatars.com/api/?name=Jane+Smith' },
-      { id: 3, name: 'Mike Johnson', avatar: 'https://ui-avatars.com/api/?name=Mike+Johnson' }
-    ]
-  }
-])
+// Нэвтэрсэн хэрэглэгчийн нэр
+const currentUserName = computed(() => userStore.currentUser?.username || '')
+console.log('currentUserName', currentUserName.value)
 
-const filteredProjects = computed(() => {
-  return projects.value.filter(project => {
-    const matchesSearch = project.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                         project.description.toLowerCase().includes(searchQuery.value.toLowerCase())
-    const matchesStatus = !statusFilter.value || project.status === statusFilter.value
-    return matchesSearch && matchesStatus
+// Төсөл шүүж харуулах - зөвхөн тухайн хэрэглэгч оролцсон төслүүд
+const projects = computed(() => {
+  const userName = currentUserName.value.toLowerCase()
+  // console.log("***********", userName, "************")
+  return proStore.projects.filter(project => {
+    // string массив эсвэл объект массив аль альтай ажиллах
+    return project.proMembers.some((member: any) => {
+      if (typeof member === 'string') {
+        return member.toLowerCase().includes(userName)
+      } else if (member && member.name) {
+        return member.name.toLowerCase().includes(userName)
+      }
+      return false
+    })
   })
 })
 
-const handleCreateProject = () => {
-  // TODO: Implement project creation logic
-  projects.value.push({
-    id: projects.value.length + 1,
-    ...newProject.value,
-    tasks: 0,
-    members: []
-  })
-  isCreateModalOpen.value = false
-  newProject.value = {
-    name: '',
-    description: '',
-    status: 'active'
+
+// const allusers = await userStore.getAllUsers();
+
+
+// Төсөл үүсгэх формын утгууд
+const newProject = reactive({
+  proName: '',
+  proDesc: '',
+  proType: '',
+  proStatus: 'active',
+  proStartDate: '',
+  proEndDate: '',
+  proMembers: [] as User[],
+})
+
+// Төсөл үүсгэх
+const handleCreateProject = async () => {
+  try {
+    const payload = {
+      ...newProject,
+      proMembers: newProject.proMembers.map(member => member.username) // name эсвэл email тохируул
+    }
+    console.log("names:", payload.proMembers)
+    await proStore.createProject(payload)
+    isCreateModalOpen.value = false
+    resetForm()
+  } catch (error) {
+    console.error('Project creation failed:', error)
   }
 }
-</script> 
+
+
+// Төлөвийн өнгө харуулах
+const getStatusClass = (status: string) => {
+  switch (status) {
+    case 'In Progress':
+      return 'bg-blue-100 text-blue-800'
+    case 'Planning':
+      return 'bg-yellow-100 text-yellow-800'
+    case 'Completed':
+      return 'bg-green-100 text-green-800'
+    default:
+      return 'bg-gray-100 text-gray-800'
+  }
+}
+
+// Форм дахин хоослох
+const resetForm = () => {
+  newProject.proName = ''
+  newProject.proDesc = ''
+  newProject.proType = ''
+  newProject.proStatus = 'active'
+  newProject.proStartDate = ''
+  newProject.proEndDate = ''
+  newProject.proMembers = []
+}
+
+// Projects татах
+onMounted(() => {
+  proStore.getAllProjects()
+})
+
+onMounted(() => {
+  userStore.getUsers()
+})
+// console.log('projects', projects.value)
+
+</script>

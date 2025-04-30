@@ -1,6 +1,6 @@
 package com.example.project;
 
-public class ProjectResponse {
+public class ProjectResponse{
 
     private String message;
     private ProRegRequest request;

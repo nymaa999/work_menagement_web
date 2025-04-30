@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class ProRegRequest {
 
-    // private ObjectId id;
     private String proName;
     private String proDesc;
     private String proType;
